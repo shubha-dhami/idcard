@@ -1,39 +1,21 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardTitle , CardText } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
 
-class Menu extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedDish: null
-        };
-    }
-    onDishSelect(dis){
-        this.setState({selectedDish:dis});
-    }
-    renderDish(dis){
-        if (dis != null)
-            return (
-                <Card>
-                    <CardBody>
-                        <CardTitle>{dis.name}</CardTitle>
-                        <CardText>{dis.description}</CardText>
-                    </CardBody>
-                </Card>
-            );
-        else
-            return (
-                <div></div>
-            );
-    }
+function RenderMenu({onClick,dish}) {
+    return(
+<Card key={dish.id} onClick={() => onClick(dish.id)}>
+    <CardImg width="100%" src={dish.image} alt={dish.name} />
+    <CardImgOverlay>
+        <CardTitle>{dish.name}</CardTitle>
+    </CardImgOverlay>
+</Card>
+    );}
 
-    render() {
-        const menu = this.props.dishes.map((dis) => {
+    const Menu=(props)=>{
+        const menu = props.dishes.map((dish) => {
             return (
-                <div className="col-12 col-md-5 m-2">
-                    <Card key={dis.id} onClick={()=>this.onDishSelect(dis)}>
-                            <CardTitle>{dis.name}</CardTitle>
-                    </Card>
+                <div className="col-12 col-md-5 m-1">
+                    <RenderMenu dish={dish} onClick={props.onClick} />
                 </div>
             );
         });
@@ -41,14 +23,10 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row">
-                        {menu}
-                    <div className="col-12 col-md-5 m-1">
-                        {this.renderDish(this.state.selectedDish)}
-                    </div>
+                   {menu}
                 </div>
             </div>
         );
     }
-}
 
 export default Menu;
